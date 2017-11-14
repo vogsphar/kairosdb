@@ -14,6 +14,15 @@ now you can point your browser to http://localhost:8080
 
 using `-e "CASSANDRA_KEYSPACE=bob"` can be used to change the default keyspace name "kairosdb" to a "bob".
 
+## use own config files
+
+use config files from the current directory:
+
+``` bash
+docker run --name some-kairos1 -d -p 8080:8080 -v $PWD:/opt/kairosdb/conf vogsphar/kairosdb
+```
+
+
 ## build custom image
 ``` bash
 git clone https://github.com/vogsphar/kairosdb
