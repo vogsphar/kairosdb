@@ -18,5 +18,9 @@ if [ -n "$CASSANDRA_HOST_LIST" ]; then
 	conf kairosdb.datastore.cassandra.write_buffer_max_size 3000
 	conf kairosdb.datastore.cassandra.cql_host_list "$CASSANDRA_HOST_LIST"
 fi
+# Overwrite logback.xml file with custom configuration 
+if [ -n "$LOGBACK_CUSTOM" ]; then
+  echo $LOGBACK_CUSTOM > /opt/kairosdb/conf/logging/logback-test.xml && cat /opt/kairosdb/conf/logging/logback-test.xml 
+fi
 cat $CONF
 exec /opt/kairosdb/bin/kairosdb.sh run
