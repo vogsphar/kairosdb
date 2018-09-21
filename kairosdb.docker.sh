@@ -17,7 +17,7 @@ if [ -n "$CASSANDRA_HOST_LIST" ]; then
 	conf kairosdb.datastore.cassandra.replication_factor 1
 	conf kairosdb.datastore.cassandra.write_buffer_max_size 3000
 	conf kairosdb.datastore.cassandra.write_delay 1000
-	conf kairosdb.datastore.cassandra.write_buffer_max_size 500000
+	conf kairosdb.datastore.cassandra.write_buffer_max_size 10000
 	conf kairosdb.datastore.cassandra.single_row_read_size 10240
 	conf kairosdb.datastore.cassandra.multi_row_size 2000
 	conf kairosdb.datastore.cassandra.multi_row_read_size 2048
