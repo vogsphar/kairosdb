@@ -4,9 +4,10 @@ function conf
 {
   sed -i -e "s/^$1=.*/$1=$2/" $CONF
 }
-if [ -n "$CASSANDRA_KEYSPACE" ]; then
+if [ -n "$CASSANDRA_KEYSPACE" ] || [ -n "$CASSANDRA_KEYSPACE_RANDOM" ] ; then
 # kairosdb.datastore.cassandra.hector.loadBalancingPolicy 
-	conf kairosdb.datastore.cassandra.keyspace "$CASSANDRA_KEYSPACE"
+	[ -n "$CASSANDRA_KEYSPACE" ] &&	conf kairosdb.datastore.cassandra.keyspace "$CASSANDRA_KEYSPACE"
+	[ -n "$CASSANDRA_KEYSPACE_RANDOM" ] && conf kairosdb.datastore.cassandra.keyspace $(cat /dev/urandom | tr -dc 'a-z' | fold -w 32 | head -n 1)
 fi
 if [ -n "$CASSANDRA_HOST_LIST" ]; then
 # kairosdb.datastore.cassandra.hector.loadBalancingPolicy 
