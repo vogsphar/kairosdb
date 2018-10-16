@@ -7,5 +7,5 @@ COPY	kairosdb.docker.sh /opt/kairosdb/bin/kairosdb.docker.sh
 COPY	kairosdb.logback.xml /opt/kairosdb/conf/logging/logback.xml
 
 VOLUME /opt/kairosdb/conf
-EXPOSE 8080 4242
+EXPOSE 8080 4242 8443
 CMD ["/opt/kairosdb/bin/kairosdb.docker.sh"]

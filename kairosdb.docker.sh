@@ -1,8 +1,9 @@
 #!/bin/bash
 CONF=/opt/kairosdb/conf/kairosdb.properties
+cp $CONF $CONF.orig
 function conf
 {
-  sed -i -e "s/^$1=.*/$1=$2/" $CONF
+  sed -i -e "s/^#*$1=.*/$1=$2/" $CONF
 }
 if [ -n "$CASSANDRA_KEYSPACE" ] || [ -n "$CASSANDRA_KEYSPACE_RANDOM" ] ; then
 # kairosdb.datastore.cassandra.hector.loadBalancingPolicy 
@@ -24,18 +25,38 @@ if [ -n "$CASSANDRA_HOST_LIST" ]; then
 	conf kairosdb.datastore.cassandra.multi_row_read_size 2048
 	conf kairosdb.datastore.cassandra.row_key_cache_size 10240
 	conf kairosdb.datastore.cassandra.max_queue_size 500	
-	conf kairosdb.queue_processor.batch_size=4000
+	conf kairosdb.queue_processor.batch_size 4000
 	conf kairosdb.query_cache.cache_file_cleaner_schedule "0 *\\/30 * * * ?"		
 else
 # shrink kairosdb.properties
 	sed -i '/\.cassandra\./d' $CONF
+fi
+if [ -n "$JETTYCERT" ] ; then
+	echo enabling HTTPS and disabling HTTP
+        conf kairosdb.jetty.port 0
+        conf kairosdb.jetty.ssl.port 8443
+	conf kairosdb.jetty.ssl.keystore.path "$JETTYCERT"
+	conf kairosdb.jetty.ssl.keystore.password "$JETTYPASS"
+fi
+if [ -n "$BASICUSER" ] ; then
+	echo enabling BASIC AUTH
+	conf kairosdb.jetty.basic_auth.user "$BASICUSER"
+	conf kairosdb.jetty.basic_auth.password "$BASICPASS"
+fi
+if [ -n "$TRUSTSTORE" ] ; then
+        export JAVA_OPTS="$JAVA_OPTS -Djavax.net.ssl.trustStore=$TRUSTSTORE -Djavax.net.ssl.trustStorePassword=$STOREPASS -Djavax.net.ssl.keyStore=$KEYSTORE -Djavax.net.ssl.keyStorePassword=$STOREPASS"
+	echo enabling SSL "JAVA_OPTS=$JAVA_OPTS"
+	ls -l /cert/
+
+	conf kairosdb.datastore.cassandra.use_ssl true
+
 fi
 # Overwrite logback.xml file with custom configuration 
 if [ -n "$LOGBACK_CUSTOM" ]; then
   echo $LOGBACK_CUSTOM > /opt/kairosdb/conf/logging/logback-test.xml && cat /opt/kairosdb/conf/logging/logback-test.xml 
 fi
 
-cat $CONF
+diff -Naur $CONF.orig $CONF
 
 # remove default demo points and blast
 sed -i '/\.blast\.|\.demo\./d' $CONF
