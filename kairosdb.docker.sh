@@ -14,9 +14,9 @@ if [ -n "$CASSANDRA_HOST_LIST" ]; then
 # kairosdb.datastore.cassandra.hector.loadBalancingPolicy 
 	conf kairosdb.service.datastore org.kairosdb.datastore.cassandra.CassandraModule
 	conf kairosdb.datastore.cassandra.cql_host_list "$CASSANDRA_HOST_LIST"
-	conf kairosdb.datastore.cassandra.read_consistency_level ONE
+	conf kairosdb.datastore.cassandra.read_consistency_level QUORUM
 	conf kairosdb.datastore.cassandra.write_consistency_level QUORUM
-	conf kairosdb.datastore.cassandra.replication_factor 2
+	conf kairosdb.datastore.cassandra.replication  "{'class': 'SimpleStrategy','replication_factor' : 2}"
 	conf kairosdb.datastore.cassandra.write_buffer_max_size 3000
 	conf kairosdb.datastore.cassandra.write_delay 1000
 	conf kairosdb.datastore.cassandra.write_buffer_max_size 10000
