@@ -1,6 +1,6 @@
 #!/bin/bash
 CONF=/opt/kairosdb/conf/kairosdb.properties
-cp $CONF $CONF.orig
+test -e $CONF.orig || cp $CONF $CONF.orig
 function conf
 {
   sed -i -e "s/^#*$1=.*/$1=$2/" $CONF
