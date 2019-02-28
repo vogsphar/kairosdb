@@ -10,13 +10,15 @@ if [ -n "$CASSANDRA_KEYSPACE" ] || [ -n "$CASSANDRA_KEYSPACE_RANDOM" ] ; then
 	[ -n "$CASSANDRA_KEYSPACE" ] &&	conf kairosdb.datastore.cassandra.keyspace "$CASSANDRA_KEYSPACE"
 	[ -n "$CASSANDRA_KEYSPACE_RANDOM" ] && conf kairosdb.datastore.cassandra.keyspace $(cat /dev/urandom | tr -dc 'a-z' | fold -w 32 | head -n 1)
 fi
+if [ -n "$CASSANDRA_REPLICATION_FACTOR" ]; then
+	conf kairosdb.datastore.cassandra.read_consistency_level TWO
+	conf kairosdb.datastore.cassandra.write_consistency_level QUORUM
+	conf kairosdb.datastore.cassandra.replication  "{'class': 'SimpleStrategy','replication_factor' : $CASSANDRA_REPLICATION_FACTOR}"
+fi
 if [ -n "$CASSANDRA_HOST_LIST" ]; then
 # kairosdb.datastore.cassandra.hector.loadBalancingPolicy 
 	conf kairosdb.service.datastore org.kairosdb.datastore.cassandra.CassandraModule
 	conf kairosdb.datastore.cassandra.cql_host_list "$CASSANDRA_HOST_LIST"
-	conf kairosdb.datastore.cassandra.read_consistency_level QUORUM
-	conf kairosdb.datastore.cassandra.write_consistency_level QUORUM
-	conf kairosdb.datastore.cassandra.replication  "{'class': 'SimpleStrategy','replication_factor' : 2}"
 	conf kairosdb.datastore.cassandra.write_buffer_max_size 3000
 	conf kairosdb.datastore.cassandra.write_delay 1000
 	conf kairosdb.datastore.cassandra.write_buffer_max_size 10000
