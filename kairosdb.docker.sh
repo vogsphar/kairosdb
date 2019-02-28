@@ -19,12 +19,6 @@ if [ -n "$CASSANDRA_HOST_LIST" ]; then
 # kairosdb.datastore.cassandra.hector.loadBalancingPolicy 
 	conf kairosdb.service.datastore org.kairosdb.datastore.cassandra.CassandraModule
 	conf kairosdb.datastore.cassandra.cql_host_list "$CASSANDRA_HOST_LIST"
-	conf kairosdb.datastore.cassandra.write_buffer_max_size 3000
-	conf kairosdb.datastore.cassandra.write_delay 1000
-	conf kairosdb.datastore.cassandra.write_buffer_max_size 10000
-	conf kairosdb.datastore.cassandra.single_row_read_size 10240
-	conf kairosdb.datastore.cassandra.multi_row_size 2000
-	conf kairosdb.datastore.cassandra.multi_row_read_size 2048
 	conf kairosdb.datastore.cassandra.row_key_cache_size 10240
 	conf kairosdb.datastore.cassandra.max_queue_size 500	
 	conf kairosdb.queue_processor.batch_size 4000
