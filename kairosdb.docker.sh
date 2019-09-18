@@ -20,8 +20,8 @@ if [ -n "$CASSANDRA_HOST_LIST" ]; then
 	conf kairosdb.service.datastore org.kairosdb.datastore.cassandra.CassandraModule
 	conf kairosdb.datastore.cassandra.cql_host_list "$CASSANDRA_HOST_LIST"
 	conf kairosdb.datastore.cassandra.row_key_cache_size 10240
-	conf kairosdb.datastore.cassandra.max_queue_size 500	
-	conf kairosdb.queue_processor.batch_size 4000
+	conf kairosdb.datastore.cassandra.max_queue_size 100
+	conf kairosdb.queue_processor.batch_size 100
 	conf kairosdb.query_cache.cache_file_cleaner_schedule "0 *\\/30 * * * ?"		
 else
 # shrink kairosdb.properties
