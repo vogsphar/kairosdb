@@ -84,7 +84,7 @@ public class CassandraClientImpl implements CassandraClient, KairosMetricReporte
 					.setMaxQueueSize(m_configuration.getMaxQueueSize()))
 				.withReconnectionPolicy(new ExponentialReconnectionPolicy(100, 5 * 1000))
 				.withLoadBalancingPolicy(new SelectiveLoadBalancingPolicy(readLoadBalancePolicy, m_writeLoadBalancingPolicy))
-				.withCompression(ProtocolOptions.Compression.LZ4)
+				.withCompression(ProtocolOptions.Compression.NONE) // CHANGED FOR AZURE FROM LZ4 TO NONE
 				.withoutJMXReporting()
 				.withQueryOptions(new QueryOptions().setConsistencyLevel(m_configuration.getDataReadLevel()))
 				.withTimestampGenerator(new TimestampGenerator() //todo need to remove this and put it only on the datapoints call
